@@ -13,19 +13,28 @@ def main():
     """score calculator with menu"""
     score = 0
     print(MENU_PROMPT)
-    choice = input(">>>").upper()
+    choice = input(">>> ").upper()
     while choice != "Q":
         if choice == "G":
             score = get_valid_score()
         elif choice == "P":
             print(determine_valid_score(score))
         elif choice == "D":
-            # TODO
-            pass
+            print_characters(int(score), "*")
         else:
             print("Invalid choice")
         print(MENU_PROMPT)
         choice = input(">>>").upper()
+    print("Goodbye")
+
+
+def get_valid_score():
+    """get user input and validate against thresholds"""
+    score = float(input("Enter score (0 - 100): "))
+    while score < 0 or score > 100:
+        print("Invalid Score, try again enter a number between 0 - 100")
+        score = float(input("Enter score (0 - 100): "))
+    return score
 
 
 def determine_valid_score(score):
@@ -40,13 +49,9 @@ def determine_valid_score(score):
         return "Bad"
 
 
-def get_valid_score():
-    """get user input and validate against thresholds"""
-    score = float(input("Enter score (0 - 100): "))
-    while score < 0 or score > 100:
-        print("Invalid Score, try again enter a number between 0 - 100")
-        score = float(input("Enter score (0 - 100): "))
-    return score
+def print_characters(length, character='*'):
+    """Print defined character x times"""
+    print(length * character)
 
 
 main()
