@@ -1,5 +1,5 @@
 """
-CP1404/CP5632 - PRAC2 Temperatures
+CP1404/CP5632 - prac_02 Temperatures
 update with functions
 """
 
