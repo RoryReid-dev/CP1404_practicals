@@ -14,8 +14,14 @@ reads only the first two numbers and adds them together then prints the result, 
 or a file with any number of numbers.
 """
 
+# program 1
 name = input("Please enter you name: ").title()
 out_file = open("name.txt", "w")
 print(name, file=out_file)
 out_file.close()
 
+# program 2
+in_file = open("name.txt", "r")
+name = in_file.read().strip()
+in_file.close()
+print(f"your name is {name}")
