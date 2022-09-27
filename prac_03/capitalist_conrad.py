@@ -14,10 +14,12 @@ MAX_DECREASE = 0.05  # 5%
 MIN_PRICE = 1.0
 MAX_PRICE = 100.0
 INITIAL_PRICE = 10.0
+OUTPUT_FILE = "Conrad.txt"
 
+out_file = open(OUTPUT_FILE, 'w')
 price = INITIAL_PRICE
 number_of_days = 1
-print("${:,.2f}".format(price))
+print(f"Starting price: ${price:,.2f}", file=out_file)
 
 while price >= MIN_PRICE and price <= MAX_PRICE:
     price_change = 0
@@ -33,5 +35,6 @@ while price >= MIN_PRICE and price <= MAX_PRICE:
         price_change = random.uniform(-MAX_DECREASE, 0)
 
     price *= (1 + price_change)
-    print(f"On Day {number_of_days} price is: ${price:.2f}")
+    print(f"On Day {number_of_days} price is: ${price:.2f}", file=out_file)
     number_of_days += 1
+    out_file.close()
