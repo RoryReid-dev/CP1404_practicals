@@ -27,7 +27,7 @@ in_file.close()
 print(f"your name is {name}")
 
 # program 3
-in_file = open("number.txt", "r")
+in_file = open("numbers.txt", "r")
 number_1 = int(in_file.readline())
 number_2 = int(in_file.readline())
 in_file.close()
