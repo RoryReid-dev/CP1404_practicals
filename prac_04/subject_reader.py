@@ -8,7 +8,7 @@ FILENAME = "subject_data.txt"
 
 def main():
     data = get_data()
-    print(data)
+    print_data(data)
 
 
 def get_data():
@@ -27,6 +27,12 @@ def get_data():
         print("----------")
     input_file.close()
     return lines
+
+
+def print_data(data):
+    """print list in a formatted structure"""
+    for record in data:
+        print(f"{record[0]} is taught by {record[1]:12} and has {record[2]:3} students")
 
 
 main()
