@@ -14,7 +14,10 @@ def main():
     """Main program for guitars"""
     guitars = []
     load_file(guitars)
+    get_guitars(guitars)
+    guitars.sort()
     display_guitars(guitars)
+    save_file(guitars)
 
 
 def display_guitars(guitars):
@@ -29,6 +32,18 @@ def display_guitars(guitars):
         print("No Guitars =( go buy a Gretsch White Falcon!")
 
 
+def get_guitars(guitars):
+    """Get user input for guitars they have in collection"""
+    name = input("Name: ")
+    while name != "":
+        year = int(input("Year: "))
+        cost = float(input("Cost: "))
+        new_guitar = Guitar(name, year, cost)
+        guitars.append(new_guitar)
+        print(f"{new_guitar} added.\n")
+        name = input("Name: ")
+
+
 def load_file(guitars):
     """Guitar file reader version using the csv module."""
     in_file = open(FILENAME, 'r', newline='')
@@ -40,6 +55,14 @@ def load_file(guitars):
         guitar = Guitar(row[0], int(row[1]), float(row[2]))
         guitars.append(guitar)
     in_file.close()
+
+
+def save_file(guitars):
+    """Save current list of guitars to csv file."""
+    out_file = open(FILENAME, "w")
+    for guitar in guitars:
+        print(guitar.name, guitar.year, guitar.cost, file=out_file, sep=",")
+    out_file.close()
 
 
 main()
