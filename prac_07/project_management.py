@@ -31,12 +31,29 @@ def main():
         elif choice == "A":
             print("A")
         elif choice == "U":
-            print("U")
+            display_projects(projects)
+            update_project(projects)
         else:
             print("Invalid menu choice")
         print(MENU)
         choice = input(">>> ").upper()
     print("Thank you for using custom-built project management software.")
+
+
+def display_projects(projects):
+    """Displays numbered list of projects."""
+    for i, project in enumerate(projects):
+        print(i, project)
+
+
+def update_project(projects):
+    project_index = int(input("Project choice: "))
+    project = projects[project_index]
+    print(project)
+    updated_completion = int(input("New Percentage: "))
+    updated_priority = int(input("New Priority: "))
+    project.completion_percentage = updated_completion
+    project.priority = updated_priority
 
 
 def load_file(projects, file):
