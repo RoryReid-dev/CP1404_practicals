@@ -20,18 +20,19 @@ def main():
     choice = input(">>> ").upper()
     while choice != "Q":
         if choice == "L":
-            user_load_file = input("Enter file name to load: ")
+            user_load_file = input("Enter file name to load: ")  # TODO error checking
             load_file(projects, user_load_file)
         elif choice == "S":
-            user_save_file = input("Enter File name to save: ")
+            user_save_file = input("Enter File name to save: ")  # TODO error checking
             save_file(projects, user_save_file)
         elif choice == "D":
             display_projects(projects)
         elif choice == "F":
-            filter_date = input("Show projects that start after date (dd/mm/yy): ")
+            filter_date = input("Show projects that start after date (dd/mm/yy): ")  # TODO error checking
             display_filtered_projects(projects, filter_date)
         elif choice == "A":
-            print("A")
+            print("Let's add a new project")
+            add_project(projects)
         elif choice == "U":
             display_projects(projects)
             update_project(projects)
@@ -39,7 +40,18 @@ def main():
             print("Invalid menu choice")
         print(MENU)
         choice = input(">>> ").upper()
+    save_file(projects, FILENAME)
     print("Thank you for using custom-built project management software.")
+
+
+def add_project(projects):  # TODO error checking
+    name = input("Name: ")
+    date = input("Start date (dd/mm/yy): ")
+    priority = int(input("Priority: "))
+    cost = float(input("Cost estimate: $"))
+    completion = int(input("Percent complete: "))
+    new_project = Project(name, date, priority, cost, completion)
+    projects.append(new_project)
 
 
 def display_filtered_projects(projects, filter_date):
@@ -69,7 +81,7 @@ def display_project_status(projects):
             print(" ", project)
 
 
-def update_project(projects):
+def update_project(projects):  # TODO error checking
     """update completion and priority for projects """
     project_index = int(input("Project choice: "))
     project = projects[project_index]
