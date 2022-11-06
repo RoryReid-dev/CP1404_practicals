@@ -16,7 +16,7 @@ class Project:
         self.cost = cost
         self.completion = completion
 
-    def __str__(self):  # TODO return proper date string
+    def __str__(self):
         """repr method for project class"""
         return f"{self.name}, start: {self.start_date}, priority {self.priority}, estimate: ${self.cost}, " \
                f"completion : {self.completion}%"

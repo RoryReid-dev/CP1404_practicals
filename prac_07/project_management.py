@@ -20,16 +20,14 @@ def main():
     choice = input(">>> ").upper()
     while choice != "Q":
         if choice == "L":
-            user_load_file = input("Enter file name to load: ")  # TODO error checking
-            load_file(projects, user_load_file)
+            projects = get_user_file()
         elif choice == "S":
-            user_save_file = input("Enter File name to save: ")  # TODO error checking
+            user_save_file = get_valid_input("Enter File name to save: ")
             save_file(projects, user_save_file)
         elif choice == "D":
-            display_projects(projects)
+            display_project_status(projects)
         elif choice == "F":
-            filter_date = input("Show projects that start after date (dd/mm/yy): ")  # TODO error checking
-            display_filtered_projects(projects, filter_date)
+            display_filtered_projects(projects)
         elif choice == "A":
             print("Let's add a new project")
             add_project(projects)
@@ -44,19 +42,71 @@ def main():
     print("Thank you for using custom-built project management software.")
 
 
-def add_project(projects):  # TODO error checking
-    name = input("Name: ")
-    date = input("Start date (dd/mm/yy): ")
-    priority = int(input("Priority: "))
-    cost = float(input("Cost estimate: $"))
-    completion = int(input("Percent complete: "))
+def get_valid_date(prompt):
+    """Gets valid date from user."""
+    valid_input = False
+    while not valid_input:
+        try:
+            filter_date = input(prompt)
+            date = datetime.datetime.strptime(filter_date, "%d/%m/%Y").date()
+            valid_input = True
+        except ValueError:
+            print("Enter a valid date in format DD/MM/YYYY")
+    return date
+
+
+def get_valid_input(prompt):
+    """Get a valid input that is not blank using exception handling"""
+    user_input = input(prompt)
+    while user_input == "":
+        print("Input can not be blank")
+        user_input = input(prompt)
+    return user_input
+
+
+def get_valid_number(prompt, low, high):
+    """Get a valid integer above 0 using exception handling"""
+    is_valid_number = False
+    while not is_valid_number:
+        try:
+            number = int(input(prompt))
+            while number < low or number > high:
+                print(f"Invalid number. Please enter a number between {low} - {high}.")
+                number = int(input(prompt))
+            is_valid_number = True
+        except ValueError:
+            print(f"Invalid number. Please enter a number between {low} - {high}.")
+    return number  # no problem with potential undefined variable
+
+
+def get_valid_float(prompt):
+    """Get a valid float above 0 using exception handling"""
+    is_valid_number = False
+    while not is_valid_number:
+        try:
+            number = float(input(prompt))
+            while number < 0:
+                print("Number must be >= 1")
+                number = float(input(prompt))
+            is_valid_number = True
+        except ValueError:
+            print("Invalid input; enter a valid number")
+    return number  # no problem with potential undefined variable
+
+
+def add_project(projects):
+    name = get_valid_input("Name: ")
+    date = get_valid_date("Start date (dd/mm/yy): ")
+    priority = get_valid_number("Priority: ", 1, 20)
+    cost = get_valid_float("Cost estimate: $")
+    completion = get_valid_number("Percent complete: ", 0, 100)
     new_project = Project(name, date, priority, cost, completion)
     projects.append(new_project)
 
 
-def display_filtered_projects(projects, filter_date):
+def display_filtered_projects(projects):
     """Displays projects after inputted filter date """
-    filter_date = datetime.datetime.strptime(filter_date, "%d/%m/%Y").date()
+    filter_date = get_valid_date("Show projects that start after date (dd/mm/yy): ")
     filtered_projects = [project for project in projects if project.start_date > filter_date]
     filtered_projects.sort(key=attrgetter("start_date"))
     for project in filtered_projects:
@@ -81,15 +131,29 @@ def display_project_status(projects):
             print(" ", project)
 
 
-def update_project(projects):  # TODO error checking
+def update_project(projects):  # TODO error checking for percentage
     """update completion and priority for projects """
-    project_index = int(input("Project choice: "))
+    project_index = get_valid_number("Project choice: ", 0, len(projects) - 1)  # Get true index with -1
     project = projects[project_index]
     print(project)
-    updated_completion = int(input("New Percentage: "))
-    updated_priority = int(input("New Priority: "))
+    updated_completion = get_valid_number("New Percentage: ", 0, 100)
+    updated_priority = get_valid_number("New Priority: ", 0, 10)
     project.completion_percentage = updated_completion
     project.priority = updated_priority
+
+
+def get_user_file():
+    """Gets user entered valid file to load."""
+    loaded_projects = []
+    valid_input = False
+    while not valid_input:
+        try:
+            loaded_project_file = input("Enter file you wish to load: ")
+            load_file(loaded_projects, loaded_project_file)
+            valid_input = True
+        except FileNotFoundError:
+            print(f"Unable to find file {loaded_project_file}")
+    return loaded_projects
 
 
 def load_file(projects, file):
@@ -97,8 +161,10 @@ def load_file(projects, file):
     with open(file, "r") as in_file:
         in_file.readline()  # Reads the header line
         for line in in_file:
-            parts = line.strip().split("\t")
-            project = Project(parts[0], parts[1], int(parts[2]), float(parts[3]), int(parts[4]))
+            section = line.strip().split("\t")
+            project = Project(section[0], section[1], int(section[2]), float(section[3]), int(section[4]))
+            project.start_date = datetime.datetime.strptime(project.start_date,
+                                                            "%d/%m/%Y").date()  # convert string to date
             projects.append(project)
 
 
