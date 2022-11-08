@@ -22,7 +22,7 @@ def main():
         if choice == "L":
             projects = get_user_file()
         elif choice == "S":
-            user_save_file = get_valid_input("Enter File name to save: ")
+            user_save_file = get_valid_string("Enter File name to save: ")
             save_file(projects, user_save_file)
         elif choice == "D":
             display_project_status(projects)
@@ -44,24 +44,44 @@ def main():
 
 def get_valid_date(prompt):
     """Gets valid date from user."""
-    valid_input = False
-    while not valid_input:
+    is_valid_date = False
+    while not is_valid_date:
         try:
             filter_date = input(prompt)
             date = datetime.datetime.strptime(filter_date, "%d/%m/%Y").date()
-            valid_input = True
+            is_valid_date = True
         except ValueError:
             print("Enter a valid date in format DD/MM/YYYY")
     return date
 
 
-def get_valid_input(prompt):
+def get_valid_string(prompt):
     """Get a valid input that is not blank using exception handling"""
     user_input = input(prompt)
     while user_input == "":
         print("Input can not be blank")
         user_input = input(prompt)
     return user_input
+
+
+def get_valid_input(default_value, prompt, low, high):
+    """Get integer between low and high or return value if no user input."""
+    is_valid = False
+    while not is_valid:
+        try:
+            user_input = input(prompt)
+            if user_input == "":
+                user_input = default_value
+                return user_input
+                is_valid = True
+            if int(user_input) < low or int(user_input) > high:
+                print(f"Please enter a number from {low} - {high}")
+            else:
+                user_input = int(user_input)
+                return user_input
+                is_valid = True
+        except ValueError:
+            print("Must be a number or enter blank value to keep the same")
 
 
 def get_valid_number(prompt, low, high):
@@ -95,7 +115,7 @@ def get_valid_float(prompt):
 
 
 def add_project(projects):
-    name = get_valid_input("Name: ")
+    name = get_valid_string("Name: ")
     date = get_valid_date("Start date (dd/mm/yy): ")
     priority = get_valid_number("Priority: ", 1, 20)
     cost = get_valid_float("Cost estimate: $")
@@ -131,14 +151,14 @@ def display_project_status(projects):
             print(" ", project)
 
 
-def update_project(projects):  # TODO error checking for percentage
+def update_project(projects):
     """update completion and priority for projects """
     project_index = get_valid_number("Project choice: ", 0, len(projects) - 1)  # Get true index with -1
     project = projects[project_index]
     print(project)
-    updated_completion = get_valid_number("New Percentage: ", 0, 100)
-    updated_priority = get_valid_number("New Priority: ", 0, 10)
-    project.completion_percentage = updated_completion
+    updated_completion = get_valid_input(project.completion, "New Percentage: ", 0, 100)
+    updated_priority = get_valid_input(project.priority, "New Priority: ", 0, 10)
+    project.completion = updated_completion
     project.priority = updated_priority
 
 
