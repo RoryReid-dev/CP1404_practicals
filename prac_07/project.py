@@ -2,6 +2,7 @@
 CP1404/CP5632 Practical
 project management class
 Estimate - 90 minutes
+Actual: 20 Hours
 """
 
 
