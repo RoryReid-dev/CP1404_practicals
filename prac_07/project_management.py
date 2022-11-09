@@ -1,6 +1,8 @@
 """
 CP1404/CP5632 Practical
 project management main program
+Estimate - 90 minutes
+Actual: 20 Hours
 """
 
 import datetime
@@ -115,6 +117,7 @@ def get_valid_float(prompt):
 
 
 def add_project(projects):
+    """get user input and add to class"""
     name = get_valid_string("Name: ")
     date = get_valid_date("Start date (dd/mm/yy): ")
     priority = get_valid_number("Priority: ", 1, 20)

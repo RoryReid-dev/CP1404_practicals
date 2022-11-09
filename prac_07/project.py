@@ -2,6 +2,7 @@
 CP1404/CP5632 Practical
 project management class
 Estimate - 90 minutes
+Actual: 20 Hours
 """
 
 
@@ -31,5 +32,5 @@ class Project:
         return self.completion == 100
 
     def __lt__(self, other):
-        """It method set for sorting projects by priority."""
+        """iterable method set for sorting projects by priority."""
         return self.priority < other.priority
