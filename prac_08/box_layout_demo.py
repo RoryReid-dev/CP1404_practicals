@@ -8,5 +8,15 @@ class BoxLayoutDemo(App):
         self.root = Builder.load_file('box_layout.kv')
         return self.root
 
+    def handle_pressed(self):
+        """Handle on press in Kv"""
+        print("test")
+        self.root.ids.output_label.text = "Hello " + self.root.ids.input_name.text
+
+    def clear_pressed(self):
+        """clear on press"""
+        self.root.ids.output_label.text = ""
+        self.root.ids.input_name.text = ""
+
 
 BoxLayoutDemo().run()
