@@ -22,14 +22,22 @@ class MilesConverterApp(App):
 
     def calculate_input(self, value):
         """Handle conversion"""
-        converted_number = float(value) * MILES_TO_KM
-        self.conversion_result = str(f"{converted_number:.2f}")
+        try:
+            converted_number = float(value) * MILES_TO_KM
+            self.conversion_result = str(f"{converted_number:.2f}")
+        except ValueError:
+            self.conversion_result = str("0.0")
 
     def handle_increment(self, value, change):
         """Handle up/down button press"""
-        result = float(value) + change
-        self.root.ids.input_miles.text = str(f"{result:.2f}")
-        self.calculate_input(result)
+        try:
+            result = float(value) + change
+            self.root.ids.input_miles.text = str(f"{result:.2f}")
+            self.calculate_input(result)
+        except ValueError:
+            result = 0 + change
+            self.root.ids.input_miles.text = str(f"{result:.2f}")
+            self.calculate_input(result)
 
 
 MilesConverterApp().run()
