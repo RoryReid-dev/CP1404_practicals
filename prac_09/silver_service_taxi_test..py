@@ -10,10 +10,10 @@ from silver_service_taxi import SilverServiceTaxi
 
 def main():
     """Test SilverServiceTaxi."""
-    taxi = SilverServiceTaxi("Test Taxi", 100, 6)
-    taxi.drive(14)
+    taxi = SilverServiceTaxi("Test Taxi", 100, 2)
+    taxi.drive(18)
     print(taxi)
-    print(taxi.get_fare())
+    print(f"${taxi.get_fare():.2f}")
 
 
 main()
